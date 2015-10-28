@@ -16,20 +16,26 @@ class EventTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Load the sample data.
-        loadSampleEvents()
+        
+        if let saveEvents = loadEvents() {
+            events += saveEvents
+        }
+        else {
+            // Load the sample data.
+            loadSampleEvents()
+        }
+        
     }
     
     func loadSampleEvents() {
         let photo1 = UIImage(named: "google")
-        let event1 = Event(name: "Google Info Session", description: "Information session w/ free bagels", date: "10/25/15", time: "15:30", photo: photo1)!
+        let event1 = Event(name: "Google Info Session", info: "Information session w/ free bagels", date: "10/25/15", time: "15:30", photo: photo1)!
         
         let photo2 = UIImage(named: "microsoft")
-        let event2 = Event(name: "Microsoft Tech Talk", description: "Tech Talk w/ Crozet pizza", date: "10/30/15", time: "19:00", photo: photo2)!
+        let event2 = Event(name: "Microsoft Tech Talk", info: "Tech Talk w/ Crozet pizza", date: "10/30/15", time: "19:00", photo: photo2)!
         
         let photo3 = UIImage(named: "capital_one")
-        let event3 = Event(name: "Capital One Tech Talk", description: "Tech Talk w/ Mellow pizza", date: "10/28/15", time: "17:00", photo: photo3)!
+        let event3 = Event(name: "Capital One Tech Talk", info: "Tech Talk w/ Mellow pizza", date: "10/28/15", time: "17:00", photo: photo3)!
         
         events += [event1, event2, event3]
         
@@ -60,7 +66,7 @@ class EventTableViewController: UITableViewController {
         
         cell.nameLabel.text = event.name
         cell.photoImageView.image = event.photo
-        cell.descriptionLabel.text = event.description
+        cell.infoLabel.text = event.info
         cell.dateTimeLabel.text = "\(event.date) - \(event.time)"
         
         return cell
@@ -118,6 +124,22 @@ class EventTableViewController: UITableViewController {
             events.append(event)
             tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
         }
+        
+        // Save the events.
+        saveEvents()
+    }
+    
+    // MARK: NSCoding
+    
+    func saveEvents() {
+        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(events, toFile: Event.ArchiveURL.path!)
+        if !isSuccessfulSave {
+            print("Failed to save events...")
+        }
+    }
+    
+    func loadEvents() -> [Event]? {
+        return NSKeyedUnarchiver.unarchiveObjectWithFile(Event.ArchiveURL.path!) as? [Event]
     }
     
 }
