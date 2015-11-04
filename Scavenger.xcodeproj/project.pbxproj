@@ -7,17 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		142DCAEB1BEAC16700AE6CA0 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142DCAEA1BEAC16700AE6CA0 /* DetailViewController.swift */; };
 		1474805B1BCF0A41004D0028 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1474805A1BCF0A41004D0028 /* AppDelegate.swift */; };
 		1474805D1BCF0A41004D0028 /* EventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1474805C1BCF0A41004D0028 /* EventViewController.swift */; };
 		147480601BCF0A41004D0028 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1474805E1BCF0A41004D0028 /* Main.storyboard */; };
 		147480621BCF0A41004D0028 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 147480611BCF0A41004D0028 /* Assets.xcassets */; };
 		147480651BCF0A41004D0028 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 147480631BCF0A41004D0028 /* LaunchScreen.storyboard */; };
 		147480701BCF0A41004D0028 /* ScavengerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1474806F1BCF0A41004D0028 /* ScavengerTests.swift */; };
-		1474807B1BCF1BA6004D0028 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1474807A1BCF1BA6004D0028 /* Event.swift */; settings = {ASSET_TAGS = (); }; };
-		1474807C1BCF1BA6004D0028 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1474807A1BCF1BA6004D0028 /* Event.swift */; settings = {ASSET_TAGS = (); }; };
-		1474807E1BCF1D94004D0028 /* EventTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1474807D1BCF1D94004D0028 /* EventTableViewCell.swift */; settings = {ASSET_TAGS = (); }; };
-		147480811BCF21A1004D0028 /* EventTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1474807F1BCF21A1004D0028 /* EventTableViewController.swift */; settings = {ASSET_TAGS = (); }; };
-		147480821BCF21A1004D0028 /* EventTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 147480801BCF21A1004D0028 /* EventTableViewController.xib */; settings = {ASSET_TAGS = (); }; };
+		1474807B1BCF1BA6004D0028 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1474807A1BCF1BA6004D0028 /* Event.swift */; };
+		1474807C1BCF1BA6004D0028 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1474807A1BCF1BA6004D0028 /* Event.swift */; };
+		1474807E1BCF1D94004D0028 /* EventTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1474807D1BCF1D94004D0028 /* EventTableViewCell.swift */; };
+		147480811BCF21A1004D0028 /* EventTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1474807F1BCF21A1004D0028 /* EventTableViewController.swift */; };
+		147480821BCF21A1004D0028 /* EventTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 147480801BCF21A1004D0028 /* EventTableViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,6 +32,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		142DCAEA1BEAC16700AE6CA0 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		147480571BCF0A41004D0028 /* Scavenger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scavenger.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1474805A1BCF0A41004D0028 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1474805C1BCF0A41004D0028 /* EventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventViewController.swift; sourceTree = "<group>"; };
@@ -90,6 +92,7 @@
 				1474805C1BCF0A41004D0028 /* EventViewController.swift */,
 				1474805E1BCF0A41004D0028 /* Main.storyboard */,
 				1474807F1BCF21A1004D0028 /* EventTableViewController.swift */,
+				142DCAEA1BEAC16700AE6CA0 /* DetailViewController.swift */,
 				147480801BCF21A1004D0028 /* EventTableViewController.xib */,
 				1474807D1BCF1D94004D0028 /* EventTableViewCell.swift */,
 				1474807A1BCF1BA6004D0028 /* Event.swift */,
@@ -213,6 +216,7 @@
 				1474807E1BCF1D94004D0028 /* EventTableViewCell.swift in Sources */,
 				1474805D1BCF0A41004D0028 /* EventViewController.swift in Sources */,
 				1474807B1BCF1BA6004D0028 /* Event.swift in Sources */,
+				142DCAEB1BEAC16700AE6CA0 /* DetailViewController.swift in Sources */,
 				1474805B1BCF0A41004D0028 /* AppDelegate.swift in Sources */,
 				147480811BCF21A1004D0028 /* EventTableViewController.swift in Sources */,
 			);
