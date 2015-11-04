@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class Event: NSObject, NSCoding {
     // MARK: Properties
@@ -16,6 +17,7 @@ class Event: NSObject, NSCoding {
     var date: String
     var time: String
     var photo: UIImage?
+    var location: CLLocation
     
     // MARK: Archiving Paths
     
@@ -30,16 +32,18 @@ class Event: NSObject, NSCoding {
         static let dateKey = "date"
         static let timeKey = "time"
         static let photoKey = "photo"
+        static let locationKey = "location"
     }
     
     
-    init?(name: String, info: String, date: String, time: String, photo: UIImage?) {
+    init?(name: String, info: String, date: String, time: String, photo: UIImage?, location: CLLocation) {
         // Initialize stored properties.
         self.name = name
         self.info = info
         self.date = date
         self.time = time
         self.photo = photo
+        self.location = location
         
         super.init()
         
@@ -58,6 +62,7 @@ class Event: NSObject, NSCoding {
         aCoder.encodeObject(date, forKey: PropertyKey.dateKey)
         aCoder.encodeObject(time, forKey: PropertyKey.timeKey)
         aCoder.encodeObject(photo, forKey: PropertyKey.photoKey)
+        aCoder.encodeObject(location, forKey: PropertyKey.locationKey)
     }
     
     required convenience init?(coder aDecoder: NSCoder) {
@@ -65,11 +70,13 @@ class Event: NSObject, NSCoding {
         let info = aDecoder.decodeObjectForKey(PropertyKey.infoKey) as! String
         let date = aDecoder.decodeObjectForKey(PropertyKey.dateKey) as! String
         let time = aDecoder.decodeObjectForKey(PropertyKey.timeKey) as! String
+        let location = aDecoder.decodeObjectForKey(PropertyKey.locationKey) as! CLLocation
+        
         // Because photo is an optional property of Meal, use conditional cast.
         let photo = aDecoder.decodeObjectForKey(PropertyKey.photoKey) as? UIImage
         
         // Must call designated initializer.
-        self.init(name: name, info: info, date: date, time: time, photo: photo)
+        self.init(name: name, info: info, date: date, time: time, photo: photo, location: location)
     }
     
 }

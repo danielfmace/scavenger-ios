@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class EventTableViewController: UITableViewController {
     
@@ -28,14 +29,15 @@ class EventTableViewController: UITableViewController {
     }
     
     func loadSampleEvents() {
+        let location = CLLocation(latitude: 38.0316114, longitude: -78.5107279)
         let photo1 = UIImage(named: "google")
-        let event1 = Event(name: "Google Info Session", info: "Information session w/ free bagels", date: "10/25/15", time: "15:30", photo: photo1)!
+        let event1 = Event(name: "Google Info Session", info: "Information session w/ free bagels", date: "10/25/15", time: "15:30", photo: photo1, location: location)!
         
         let photo2 = UIImage(named: "microsoft")
-        let event2 = Event(name: "Microsoft Tech Talk", info: "Tech Talk w/ Crozet pizza", date: "10/30/15", time: "19:00", photo: photo2)!
+        let event2 = Event(name: "Microsoft Tech Talk", info: "Tech Talk w/ Crozet pizza", date: "10/30/15", time: "19:00", photo: photo2, location: location)!
         
         let photo3 = UIImage(named: "capital_one")
-        let event3 = Event(name: "Capital One Tech Talk", info: "Tech Talk w/ Mellow pizza", date: "10/28/15", time: "17:00", photo: photo3)!
+        let event3 = Event(name: "Capital One Tech Talk", info: "Tech Talk w/ Mellow pizza", date: "10/28/15", time: "17:00", photo: photo3, location: location)!
         
         events += [event1, event2, event3]
         

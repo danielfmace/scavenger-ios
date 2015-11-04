@@ -19,9 +19,29 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     @IBOutlet weak var timeTextField: UITextField!
     @IBOutlet weak var saveButton: UIBarButtonItem!
 
-    var image: UIImage?
+    @IBOutlet weak var latTextField: UITextField!
     
-    let locationManager = CLLocationManager()
+    @IBOutlet weak var lonTextField: UITextField!
+
+    @IBOutlet weak var scrollView: UIScrollView!
+    
+    var image: UIImage?
+    var location: CLLocation?
+    
+    var lat: String?
+    var lon: String?
+    
+    var locationManager: CLLocationManager?
+    
+    var topInset: CGFloat?
+    var leftInset: CGFloat?
+    var rightInset: CGFloat?
+    var bottomInset: CGFloat?
+    
+    var oldHeight: CGFloat?
+    var oldWidth: CGFloat?
+    
+    var activeField: UITextField?
     
     /*
     This value is either passed by `MealTableViewController` in `prepareForSegue(_:sender:)`
@@ -32,26 +52,110 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Setup location manager and start getting location
-        self.locationManager.delegate = self
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        self.locationManager.requestWhenInUseAuthorization()
-        self.locationManager.startUpdatingLocation()
         
         // Handle name text field's user input through delegate callbacks.
         nameTextField.delegate = self
         infoTextField.delegate = self
         dateTextField.delegate = self
         timeTextField.delegate = self
+        latTextField.delegate = self
+        lonTextField.delegate = self
         
         // Enable the Save button only if the text fields are filled in.
         checkValidFields()
         
     }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        oldHeight = self.scrollView.contentSize.height
+        oldWidth = self.scrollView.contentSize.width
+        
+        topInset = self.scrollView.contentInset.top
+        leftInset = self.scrollView.contentInset.left
+        rightInset = self.scrollView.contentInset.right
+        bottomInset = self.scrollView.contentInset.bottom
+        
+        /* Are location services available on this device? */
+        if CLLocationManager.locationServicesEnabled(){
+            
+            /* Do we have authorization to access location services? */
+            switch CLLocationManager.authorizationStatus(){
+            case .AuthorizedAlways:
+                /* Yes, always */
+                createLocationManager(startImmediately: true)
+            case .AuthorizedWhenInUse:
+                /* Yes, only when our app is in use */
+                createLocationManager(startImmediately: true)
+            case .Denied:
+                /* No */
+                displayAlertWithTitle("Not Determined",
+                    message: "Location services are not allowed for this app")
+            case .NotDetermined:
+                /* We don't know yet, we have to ask */
+                createLocationManager(startImmediately: false)
+                if let manager = self.locationManager{
+                    manager.requestWhenInUseAuthorization()
+                }
+            case .Restricted:
+                /* Restrictions have been applied, we have no access
+                to location services */
+                displayAlertWithTitle("Restricted",
+                    message: "Location services are not allowed for this app")
+            }
+            
+            
+        } else {
+            /* Location services are not enabled.
+            Take appropriate action: for instance, prompt the
+            user to enable the location services */
+            print("Location services are not enabled")
+        }
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardWillShowNotification, object: nil);
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name:UIKeyboardWillHideNotification, object: nil);
+
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
+        notificationCenter.removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        let userInfo = notification.userInfo!
+        let keyboardHeight = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue().height
+        
+        UIView.animateWithDuration(0.1, animations: { () -> Void in
+            self.scrollView.contentInset = UIEdgeInsetsMake(self.topInset!, self.leftInset!, keyboardHeight, self.rightInset!)
+            self.scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(self.topInset!, self.leftInset!, keyboardHeight, self.rightInset!)
+            //self.scrollView.contentSize = CGSizeMake(self.oldWidth!, self.oldHeight! + keyboardHeight + 20)
+        })
+        
+        self.scrollView.scrollRectToVisible(activeField!.frame, animated: true)
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        
+        // Reset scrollview content inset
+        UIView.animateWithDuration(0.1, animations: { () -> Void in
+            self.scrollView.contentInset = UIEdgeInsetsMake(self.topInset!, self.leftInset!, self.bottomInset!, self.rightInset!)
+            self.scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(self.topInset!, self.leftInset!, self.bottomInset!, self.rightInset!)
+            //self.scrollView.contentSize = CGSizeMake(self.oldWidth!, self.oldHeight!)
+        })
     }
 
     // MARK: UITextFieldDelegate
@@ -64,16 +168,29 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
                 navigationItem.title = nameText
             }
             self.infoTextField.becomeFirstResponder()
+            self.scrollView.scrollRectToVisible(self.infoTextField.frame, animated: true)
         }
         else if textField == self.infoTextField {
             self.dateTextField.becomeFirstResponder()
+            self.scrollView.scrollRectToVisible(self.dateTextField.frame, animated: true)
         }
         else if textField == self.dateTextField {
             self.timeTextField.becomeFirstResponder()
+            self.scrollView.scrollRectToVisible(self.timeTextField.frame, animated: true)
         }
-            
+        else if textField == self.timeTextField {
+            self.latTextField.becomeFirstResponder()
+            self.scrollView.scrollRectToVisible(self.latTextField.frame, animated: true)
+        }
+        else if textField == self.latTextField {
+            self.lonTextField.becomeFirstResponder()
+            self.scrollView.scrollRectToVisible(self.lonTextField.frame, animated: true)
+        }
+    
         // Last text field, so hide keyboard
         else {
+            // Make a location
+            location = CLLocation(latitude: Double(latTextField.text!)!, longitude: Double(lonTextField.text!)!)
             textField.resignFirstResponder()
         }
         return true
@@ -82,6 +199,10 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func textFieldDidBeginEditing(textField: UITextField) {
         // Disable the Save button while editing.
         saveButton.enabled = false
+        
+        // Set active field
+        activeField = textField
+        
     }
     
     func checkValidFields() {
@@ -90,12 +211,17 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         let infoText = infoTextField.text ?? ""
         let dateText = dateTextField.text ?? ""
         let timeText = timeTextField.text ?? ""
+        let latText = latTextField.text ?? ""
+        let lonText = lonTextField.text ?? ""
         
-        saveButton.enabled = (!nameText.isEmpty && !infoText.isEmpty && !dateText.isEmpty && !timeText.isEmpty)
+        saveButton.enabled = (!nameText.isEmpty && !infoText.isEmpty && !dateText.isEmpty && !timeText.isEmpty && !latText.isEmpty && !lonText.isEmpty)
     }
     
     func textFieldDidEndEditing(textField: UITextField) {
         checkValidFields()
+        
+        // Reset active field to nil
+        activeField = nil
     }
     
     // MARK: Navigation
@@ -113,7 +239,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
             let time = timeTextField.text ?? ""
             
             // Set the event to be passed to EventTableViewController after the unwind segue.
-            event = Event(name: name, info: info, date: date, time: time, photo: photo)
+            event = Event(name: name, info: info, date: date, time: time, photo: photo, location: location!)
         }
     }
     
@@ -149,44 +275,76 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         dismissViewControllerAnimated(true, completion: nil)
     }
     
- /*
-    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!)
-    {
-        
-        CLGeocoder().reverseGeocodeLocation(manager.location!, completionHandler: {(placemarks, error)->Void in
-            
-            if (error != nil)
-            {
-                print("Error: " + error!.localizedDescription)
-                return
-            }
-            
-            if placemarks!.count > 0
-            {
-                let pm = placemarks[0] as! CLPlacemark
-                self.displayLocationInfo(pm)
-            }
-            else
-            {
-                print("Error with the data.")
-            }
-        })
+    
+    @IBAction func useCurrentLocation(sender: UIButton) {
+        latTextField.text = lat
+        lonTextField.text = lon
     }
-*/
-    func displayLocationInfo(placemark: CLPlacemark)
-    {
+    
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-        self.locationManager.stopUpdatingLocation()
-        print(placemark.locality)
-        print(placemark.postalCode)
-        print(placemark.administrativeArea)
-        print(placemark.country)
+        if locations.count == 0{
+            //handle error here
+            return
+        }
+        
+        let newLocation = locations[0]
+        
+        
+        print("Latitude = \(newLocation.coordinate.latitude)")
+        print("Longitude = \(newLocation.coordinate.longitude)")
+        location = newLocation
+        lat = String(newLocation.coordinate.latitude)
+        lon = String(newLocation.coordinate.latitude)
+    }
+    
+    func locationManager(manager: CLLocationManager,
+        didFailWithError error: NSError){
+            print("Location manager failed with error = \(error)")
+    }
+    
+    func locationManager(manager: CLLocationManager,
+        didChangeAuthorizationStatus status: CLAuthorizationStatus){
+            
+            print("The authorization status of location services is changed to: ", terminator: "")
+            
+            switch CLLocationManager.authorizationStatus(){
+            case .AuthorizedAlways:
+                print("Authorized")
+            case .AuthorizedWhenInUse:
+                print("Authorized when in use")
+            case .Denied:
+                print("Denied")
+            case .NotDetermined:
+                print("Not determined")
+            case .Restricted:
+                print("Restricted")
+            }
+            
+    }
+    
+    func displayAlertWithTitle(title: String, message: String){
+        let controller = UIAlertController(title: title,
+            message: message,
+            preferredStyle: .Alert)
+        
+        controller.addAction(UIAlertAction(title: "OK",
+            style: .Default,
+            handler: nil))
+        
+        presentViewController(controller, animated: true, completion: nil)
         
     }
     
-    func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!)
-    {
-        print("Error: " + error.localizedDescription)
+    func createLocationManager(startImmediately startImmediately: Bool){
+        locationManager = CLLocationManager()
+        if let manager = locationManager{
+            print("Successfully created the location manager")
+            manager.delegate = self
+            if startImmediately{
+                manager.startUpdatingLocation()
+            }
+        }
     }
     
     // MARK: Actions
