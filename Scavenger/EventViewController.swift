@@ -295,7 +295,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         print("Longitude = \(newLocation.coordinate.longitude)")
         location = newLocation
         lat = String(newLocation.coordinate.latitude)
-        lon = String(newLocation.coordinate.latitude)
+        lon = String(newLocation.coordinate.longitude)
     }
     
     func locationManager(manager: CLLocationManager,
