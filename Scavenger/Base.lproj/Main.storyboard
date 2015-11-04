@@ -299,7 +299,7 @@
         <!--Event Name-->
         <scene sceneID="aRR-QD-K84">
             <objects>
-                <viewController id="o1g-Ud-IZ4" sceneMemberID="viewController">
+                <viewController id="o1g-Ud-IZ4" customClass="DetailViewController" customModule="Scavenger" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="KRL-GO-LjQ"/>
                         <viewControllerLayoutGuide type="bottom" id="eCP-mj-gN0"/>
@@ -377,6 +377,8 @@
                                     <constraint firstItem="oac-2q-yzy" firstAttribute="top" secondItem="VRf-ZX-rCC" secondAttribute="bottom" constant="43" id="c5e-UC-fa1"/>
                                     <constraint firstItem="LHT-23-ALx" firstAttribute="top" secondItem="VRf-ZX-rCC" secondAttribute="top" id="dst-ZC-gRT"/>
                                     <constraint firstItem="VRf-ZX-rCC" firstAttribute="top" secondItem="iV3-0N-gJu" secondAttribute="topMargin" id="eUh-S6-yYB"/>
+                                    <constraint firstItem="si6-uh-4qs" firstAttribute="leading" secondItem="VRf-ZX-rCC" secondAttribute="trailing" constant="8" id="nUZ-Y9-qpZ"/>
+                                    <constraint firstItem="akv-Cn-z18" firstAttribute="leading" secondItem="VRf-ZX-rCC" secondAttribute="trailing" constant="10" id="tEz-j9-QYD"/>
                                     <constraint firstItem="ovv-Om-MDP" firstAttribute="leading" secondItem="oac-2q-yzy" secondAttribute="leading" id="tT0-zo-Ugb"/>
                                     <constraint firstItem="si6-uh-4qs" firstAttribute="trailing" secondItem="akv-Cn-z18" secondAttribute="trailing" id="w8t-PD-NSS"/>
                                     <constraint firstItem="ovv-Om-MDP" firstAttribute="leading" secondItem="VRf-ZX-rCC" secondAttribute="leading" id="zrB-5M-WK6"/>
@@ -394,6 +396,12 @@
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" title="Event Name" id="gV3-Bc-iYn"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="dateLabel" destination="akv-Cn-z18" id="1yK-Zu-Tgg"/>
+                        <outlet property="descriptionLabel" destination="LHT-23-ALx" id="UIH-Lr-zku"/>
+                        <outlet property="photoImageView" destination="VRf-ZX-rCC" id="nNJ-XA-LXl"/>
+                        <outlet property="timeLabel" destination="si6-uh-4qs" id="Edc-th-9x0"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DtU-7M-4FG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

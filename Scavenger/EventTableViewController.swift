@@ -118,10 +118,10 @@ class EventTableViewController: UITableViewController {
             let detailViewController = segue.destinationViewController as! DetailViewController
             
             // Get the cell that generated this segue.
-            if let selectedMealCell = sender as? MealTableViewCell {
-                let indexPath = tableView.indexPathForCell(selectedMealCell)!
-                let selectedMeal = meals[indexPath.row]
-                mealDetailViewController.meal = selectedMeal
+            if let selectedEventCell = sender as? EventTableViewCell {
+                let indexPath = tableView.indexPathForCell(selectedEventCell)!
+                let selectedEvent = events[indexPath.row]
+                detailViewController.event = selectedEvent
             }
         }
     }

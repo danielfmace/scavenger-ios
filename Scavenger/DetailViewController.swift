@@ -10,10 +10,28 @@ import UIKit
 
 class DetailViewController: UIViewController {
 
+    @IBOutlet weak var photoImageView: UIImageView!
+    
+    @IBOutlet weak var descriptionLabel: UILabel!
+    
+    @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
+    var event: Event?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        if let event = event {
+            navigationItem.title = event.name
+            if let photo = event.photo {
+                photoImageView.image = photo
+            }
+            descriptionLabel.text = event.info
+            timeLabel.text = event.time
+            dateLabel.text = event.date
+
+        }
     }
 
     override func didReceiveMemoryWarning() {
