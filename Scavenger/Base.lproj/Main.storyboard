@@ -305,12 +305,21 @@
                         <viewControllerLayoutGuide type="bottom" id="eCP-mj-gN0"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="mBZ-r4-QrO">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Nj-tC-OMW">
-                                <rect key="frame" x="28" y="64" width="560" height="528"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Nj-tC-OMW">
+                                <rect key="frame" x="20" y="0.0" width="560" height="528"/>
                                 <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="si6-uh-4qs">
+                                        <rect key="frame" x="136" y="66" width="38" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="21" id="oRV-vy-9z5"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="VRf-ZX-rCC">
                                         <rect key="frame" x="8" y="8" width="120" height="120"/>
                                         <constraints>
@@ -327,6 +336,10 @@
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ovv-Om-MDP">
+                                        <rect key="frame" x="8" y="136" width="46" height="30"/>
+                                        <state key="normal" title="Button"/>
+                                    </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LHT-23-ALx">
                                         <rect key="frame" x="136" y="8" width="88" height="21"/>
                                         <constraints>
@@ -336,45 +349,33 @@
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ovv-Om-MDP">
-                                        <rect key="frame" x="8" y="136" width="46" height="30"/>
-                                        <state key="normal" title="Button"/>
-                                    </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="si6-uh-4qs">
-                                        <rect key="frame" x="136" y="66" width="38" height="21"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="21" id="oRV-vy-9z5"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="akv-Cn-z18" firstAttribute="top" secondItem="LHT-23-ALx" secondAttribute="bottom" constant="8" symbolic="YES" id="08P-yQ-tA9"/>
+                                    <constraint firstItem="si6-uh-4qs" firstAttribute="leading" secondItem="VRf-ZX-rCC" secondAttribute="trailing" constant="8" id="1AJ-zC-UyZ"/>
+                                    <constraint firstItem="si6-uh-4qs" firstAttribute="top" secondItem="akv-Cn-z18" secondAttribute="bottom" constant="8" id="6tp-US-QeY"/>
                                     <constraint firstItem="LHT-23-ALx" firstAttribute="top" secondItem="3Nj-tC-OMW" secondAttribute="topMargin" id="7rt-pC-c3K"/>
                                     <constraint firstItem="ovv-Om-MDP" firstAttribute="leading" secondItem="VRf-ZX-rCC" secondAttribute="leading" id="7v6-FS-Eed"/>
+                                    <constraint firstItem="LHT-23-ALx" firstAttribute="leading" secondItem="VRf-ZX-rCC" secondAttribute="trailing" constant="8" id="ALc-eK-gar"/>
                                     <constraint firstItem="si6-uh-4qs" firstAttribute="top" secondItem="akv-Cn-z18" secondAttribute="bottom" constant="8" id="BnE-xn-Or1"/>
+                                    <constraint firstItem="akv-Cn-z18" firstAttribute="top" secondItem="LHT-23-ALx" secondAttribute="bottom" constant="8" id="Dhs-gG-1x8"/>
                                     <constraint firstItem="VRf-ZX-rCC" firstAttribute="leading" secondItem="3Nj-tC-OMW" secondAttribute="leadingMargin" id="Er6-a3-ZRh"/>
                                     <constraint firstItem="VRf-ZX-rCC" firstAttribute="top" secondItem="3Nj-tC-OMW" secondAttribute="top" constant="8" id="FiJ-50-ZNi"/>
-                                    <constraint firstItem="LHT-23-ALx" firstAttribute="leading" secondItem="akv-Cn-z18" secondAttribute="leading" constant="-2" id="GAV-YE-tfx"/>
-                                    <constraint firstItem="akv-Cn-z18" firstAttribute="leading" secondItem="VRf-ZX-rCC" secondAttribute="trailing" constant="10" id="QJb-ls-jkL"/>
+                                    <constraint firstItem="akv-Cn-z18" firstAttribute="leading" secondItem="VRf-ZX-rCC" secondAttribute="trailing" constant="10" id="U71-64-iAr"/>
                                     <constraint firstItem="ovv-Om-MDP" firstAttribute="top" secondItem="VRf-ZX-rCC" secondAttribute="bottom" constant="8" symbolic="YES" id="Wv6-AT-RUh"/>
-                                    <constraint firstItem="si6-uh-4qs" firstAttribute="leading" secondItem="VRf-ZX-rCC" secondAttribute="trailing" constant="8" id="bgz-o1-rUX"/>
-                                    <constraint firstAttribute="trailing" secondItem="LHT-23-ALx" secondAttribute="trailing" constant="336" id="lR6-f5-NUI"/>
-                                    <constraint firstItem="LHT-23-ALx" firstAttribute="leading" secondItem="VRf-ZX-rCC" secondAttribute="trailing" constant="8" id="p32-3Y-gEU"/>
-                                    <constraint firstAttribute="bottom" secondItem="ovv-Om-MDP" secondAttribute="bottom" constant="298" id="vja-hI-ADX"/>
+                                    <constraint firstAttribute="bottom" secondItem="ovv-Om-MDP" secondAttribute="bottom" constant="362" id="vja-hI-ADX"/>
                                 </constraints>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="eCP-mj-gN0" firstAttribute="top" secondItem="3Nj-tC-OMW" secondAttribute="bottom" constant="8" symbolic="YES" id="588-fk-OMg"/>
-                            <constraint firstItem="3Nj-tC-OMW" firstAttribute="leading" secondItem="mBZ-r4-QrO" secondAttribute="leadingMargin" constant="8" id="Icb-ts-9fl"/>
+                            <constraint firstItem="3Nj-tC-OMW" firstAttribute="leading" secondItem="mBZ-r4-QrO" secondAttribute="leadingMargin" id="Icb-ts-9fl"/>
                             <constraint firstItem="3Nj-tC-OMW" firstAttribute="top" secondItem="KRL-GO-LjQ" secondAttribute="bottom" id="rxb-3r-W61"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="3Nj-tC-OMW" secondAttribute="trailing" constant="-8" id="zGM-Ul-XGG"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="3Nj-tC-OMW" secondAttribute="trailing" id="zGM-Ul-XGG"/>
                         </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" title="Event Name" id="gV3-Bc-iYn"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DtU-7M-4FG" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -386,7 +387,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="NkR-W5-yPA" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="L8g-t7-i6i">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="L8g-t7-i6i">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
