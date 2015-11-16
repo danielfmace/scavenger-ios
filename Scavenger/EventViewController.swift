@@ -276,6 +276,39 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     }
     
     
+    @IBAction func takePhoto(sender: UIButton) {
+        //Hide the keyboard
+        view.endEditing(true)
+        
+        //UIImagePicker is a view controller that lets a user take a photo
+        let takeImageController = UIImagePickerController()
+        
+        //Only allow photos to be taken
+        takeImageController.sourceType = .Camera
+        
+        //Make sure the ViewController is notified when the user picks an image
+        takeImageController.delegate = self
+        
+        presentViewController(takeImageController, animated: true, completion: nil)
+        
+    }
+    
+    func takePhotoControllerDidCancel(picker: UIImagePickerController) {
+        //dismiss the picker if the user cancelled
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func takeImageController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        
+        let selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+        
+        image = selectedImage
+        
+        dismissViewControllerAnimated(true, completion: nil)
+        
+    }
+    
+    
     @IBAction func useCurrentLocation(sender: UIButton) {
         latTextField.text = lat
         lonTextField.text = lon
