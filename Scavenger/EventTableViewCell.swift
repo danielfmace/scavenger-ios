@@ -7,15 +7,16 @@
 //
 
 import UIKit
+import ParseUI
 
-class EventTableViewCell: UITableViewCell {
+class EventTableViewCell: PFTableViewCell {
     
     // MARK: Properties
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var dateTimeLabel: UILabel!
-    @IBOutlet weak var photoImageView: UIImageView!
+    @IBOutlet weak var photoImageView: PFImageView?
 
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -10,6 +10,7 @@ import UIKit
 import MapKit
 import AddressBook
 
+
 class DetailViewController: UIViewController, MKMapViewDelegate {
 
     @IBOutlet weak var photoImageView: UIImageView!
@@ -33,13 +34,20 @@ class DetailViewController: UIViewController, MKMapViewDelegate {
         // Do any additional setup after loading the view.
         if let event = event {
             navigationItem.title = event.name
-            if let photo = event.photo {
-                photoImageView.image = photo
+            if event.photo != nil {
+                event.photo!.getDataInBackgroundWithBlock { data, error in
+                    if let data = data, image = UIImage(data: data) {
+                        self.photoImageView.image = image
+                    }
+                }
+            }
+            else {
+                self.photoImageView.image = UIImage(named: "defaultPhoto")
             }
             descriptionLabel.text = event.info
             timeLabel.text = event.time
             dateLabel.text = event.date
-            location = event.location
+            location = CLLocation(latitude: event.location.latitude, longitude: event.location.longitude)
             centerMapOnLocation(location!)
             
             
@@ -50,6 +58,7 @@ class DetailViewController: UIViewController, MKMapViewDelegate {
             mapView.addAnnotation(dropPin)
             
         }
+        
     }
     
     func centerMapOnLocation(location: CLLocation) {

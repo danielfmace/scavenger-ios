@@ -44,8 +44,8 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     var activeField: UITextField?
     
     /*
-    This value is either passed by `MealTableViewController` in `prepareForSegue(_:sender:)`
-    or constructed as part of adding a new meal.
+    This value is either passed by `EventTableViewController` in `prepareForSegue(_:sender:)`
+    or constructed as part of adding a new event.
     */
     var event: Event?
     
@@ -63,7 +63,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         
         // Enable the Save button only if the text fields are filled in.
         checkValidFields()
-        
+                
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -238,8 +238,59 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
             let date = dateTextField.text ?? ""
             let time = timeTextField.text ?? ""
             
+            location = CLLocation(latitude: Double(latTextField.text!)!, longitude: Double(lonTextField.text!)!)
+            
+            let geoPoint = PFGeoPoint(location: location)
+            if let image = photo {
+                let pictureData = UIImageJPEGRepresentation(image, 0.8)
+                
+                //1
+                let file = PFFile(name: "image", data: pictureData!)
+                
+                file!.saveInBackgroundWithBlock({ (succeeded, error) -> Void in
+                    if succeeded {
+                        //2
+                        self.saveEvent(file!)
+                    } else if let error = error {
+                        //3
+                        self.showErrorView(error)
+                    }
+                    }, progressBlock: { percent in
+                        //4
+                        print("Uploaded: \(percent)%")
+                })
+            }
+            else {
+                self.saveEvent(nil)
+            }
+
+            
             // Set the event to be passed to EventTableViewController after the unwind segue.
-            event = Event(name: name, info: info, date: date, time: time, photo: photo, location: location!)
+            //event = Event(name: name, info: info, date: date, time: time, photo: file, location: geoPoint)
+        }
+    }
+    
+    func saveEvent(file: PFFile?)
+    {
+        let name = nameTextField.text ?? ""
+        let info = infoTextField.text ?? ""
+        let date = dateTextField.text ?? ""
+        let time = timeTextField.text ?? ""
+        //1
+        
+        let geoPoint = PFGeoPoint(location: location)
+        event = Event(name: name, info: info, date: date, time: time, photo: file, location: geoPoint)
+        //2
+        event!.saveInBackgroundWithBlock{ succeeded, error in
+            if succeeded {
+                //3
+                self.navigationController?.popViewControllerAnimated(true)
+            } else {
+                //4
+                if let errorMessage = error?.userInfo["error"] as? String {
+                    self.showErrorView(error!)
+                }
+            }
         }
     }
     
@@ -312,6 +363,8 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     @IBAction func useCurrentLocation(sender: UIButton) {
         latTextField.text = lat
         lonTextField.text = lon
+        
+        print("Setting current location")
     }
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {

@@ -8,8 +8,10 @@
 
 import UIKit
 import CoreLocation
+import Parse
+import ParseUI
 
-class EventTableViewController: UITableViewController {
+class EventTableViewController: PFQueryTableViewController {
     
     // MARK: Properties
     
@@ -21,59 +23,86 @@ class EventTableViewController: UITableViewController {
         // Use the edit button item provided by the table view controller.
         navigationItem.leftBarButtonItem = editButtonItem()
         
-        if let saveEvents = loadEvents() {
-            events += saveEvents
-        }
-        else {
-            // Load the sample data.
-            loadSampleEvents()
-        }
-        
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        loadObjects()
+    }
+    
+    override func queryForTable() -> PFQuery {
+        let query = Event.query()
+        return query!
     }
     
     func loadSampleEvents() {
         let location = CLLocation(latitude: 38.0316114, longitude: -78.5107279)
+        let geoPoint = PFGeoPoint(location: location)
         let photo1 = UIImage(named: "google")
-        let event1 = Event(name: "Google Info Session", info: "Information session w/ free bagels", date: "10/25/15", time: "15:30", photo: photo1, location: location)!
+        let photo2 = UIImage(named: "capital_one")
+        let photo3 = UIImage(named: "microsoft")
         
-        let photo2 = UIImage(named: "microsoft")
-        let event2 = Event(name: "Microsoft Tech Talk", info: "Tech Talk w/ Crozet pizza", date: "10/30/15", time: "19:00", photo: photo2, location: location)!
+        let pictureData1 = UIImagePNGRepresentation(photo1!)
+        let pictureData2 = UIImagePNGRepresentation(photo2!)
+        let pictureData3 = UIImagePNGRepresentation(photo3!)
         
-        let photo3 = UIImage(named: "capital_one")
-        let event3 = Event(name: "Capital One Tech Talk", info: "Tech Talk w/ Mellow pizza", date: "10/28/15", time: "17:00", photo: photo3, location: location)!
+        let file1 = PFFile(name: "image1", data: pictureData1!)
+        let file2 = PFFile(name: "image2", data: pictureData2!)
+        let file3 = PFFile(name: "image3", data: pictureData3!)
+        
+        
+        let event1 = Event(name: "Google Info Session", info: "Information session w/ free bagels", date: "10/25/15", time: "15:30", photo: file1, location: geoPoint)!
+        
+        //let photo2 = UIImage(named: "microsoft")
+        let event2 = Event(name: "Microsoft Tech Talk", info: "Tech Talk w/ Crozet pizza", date: "10/30/15", time: "19:00", photo: file3, location: geoPoint)!
+        
+        //let photo3 = UIImage(named: "capital_one")
+        let event3 = Event(name: "Capital One Tech Talk", info: "Tech Talk w/ Mellow pizza", date: "10/28/15", time: "17:00", photo: file2, location: geoPoint)!
         
         events += [event1, event2, event3]
         
-    }
+        for event in events {
+            event.saveInBackgroundWithBlock{ succeeded, error in
+                if succeeded {
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+                    self.navigationController?.popViewControllerAnimated(true)
+                } else {
+
+                    if let errorMessage = error?.userInfo["error"] as? String {
+                        self.showErrorView(error!)
+                    }
+                }
+            }
+        }
+        
     }
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
-    }
-
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return events.count
-    }
-
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath, object: PFObject!) -> PFTableViewCell? {
         // Table view cells are reused and should be dequeued using a cell identifier.
         let cellIdentifier = "EventTableViewCell"
+        
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! EventTableViewCell
         
         // Fetches the appropriate meal for the data source layout.
-        let event = events[indexPath.row]
+        let event = object as! Event
         
+        events += [event]
+        
+        if let image = event.photo {
+            cell.photoImageView!.file = image
+            
+            cell.photoImageView!.loadInBackground()
+        }
+        else {
+            cell.photoImageView!.image = UIImage(named: "defaultPhoto")
+        }
+
         cell.nameLabel.text = event.name
-        cell.photoImageView.image = event.photo
+
         cell.infoLabel.text = event.info
         cell.dateTimeLabel.text = "\(event.date) - \(event.time)"
-        
+
         return cell
     }
 
@@ -89,9 +118,18 @@ class EventTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             // Delete the row from the data source
+            let toDelete = events[indexPath.row]
+            toDelete.deleteInBackgroundWithBlock({ (succeeded, error) -> Void in
+                if succeeded {
+                    self.loadObjects()
+                    self.tableView.reloadData()
+                } else if let error = error {
+                    self.showErrorView(error)
+                }
+                })
             events.removeAtIndex(indexPath.row)
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-            saveEvents()
+            //tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            //saveEvents()
         } else if editingStyle == .Insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }
@@ -133,26 +171,37 @@ class EventTableViewController: UITableViewController {
     @IBAction func unwindToEventList(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.sourceViewController as? EventViewController, event = sourceViewController.event {
             // Add a new event.
-            let newIndexPath = NSIndexPath(forRow: events.count, inSection: 0)
-            events.append(event)
-            tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
+            self.loadObjects()
+            print("Objects loaded")
+            //let newIndexPath = NSIndexPath(forRow: events.count, inSection: 0)
+            //events.append(event)
+            //tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
         }
         
         // Save the events.
-        saveEvents()
+        //saveEvents()
     }
     
     // MARK: NSCoding
     
-    func saveEvents() {
-        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(events, toFile: Event.ArchiveURL.path!)
-        if !isSuccessfulSave {
-            print("Failed to save events...")
-        }
-    }
+    //func saveEvents() {
+    //    let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(events, toFile: Event.ArchiveURL.path!)
+    //    if !isSuccessfulSave {
+    //        print("Failed to save events...")
+    //    }
+    //}
     
-    func loadEvents() -> [Event]? {
-        return NSKeyedUnarchiver.unarchiveObjectWithFile(Event.ArchiveURL.path!) as? [Event]
-    }
+//    func getEvents() {
+//        let query = Event.query()!
+//        query.findObjectsInBackgroundWithBlock { objects, error in
+//            if error == nil {
+//                if let objects = objects as? [Event] {
+//                    self.loadEventViews(objects)
+//                }
+//            } else if let error = error {
+//                self.showErrorView(error)
+//            }
+//        }
+//    }
     
 }

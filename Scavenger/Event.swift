@@ -8,35 +8,22 @@
 
 import UIKit
 import CoreLocation
+import Foundation
 
-class Event: NSObject, NSCoding {
+class Event: PFObject, PFSubclassing {
     // MARK: Properties
     
-    var name: String
-    var info: String
-    var date: String
-    var time: String
-    var photo: UIImage?
-    var location: CLLocation
-    
-    // MARK: Archiving Paths
-    
-    static let DocumentsDirectory = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
-    static let ArchiveURL = DocumentsDirectory.URLByAppendingPathComponent("events")
-    
-    // MARK: Types
-    
-    struct PropertyKey {
-        static let nameKey = "name"
-        static let infoKey = "info"
-        static let dateKey = "date"
-        static let timeKey = "time"
-        static let photoKey = "photo"
-        static let locationKey = "location"
-    }
+    @NSManaged var name: String
+    @NSManaged var info: String
+    @NSManaged var date: String
+    @NSManaged var time: String
+    @NSManaged var photo: PFFile?
+    @NSManaged var location: PFGeoPoint
     
     
-    init?(name: String, info: String, date: String, time: String, photo: UIImage?, location: CLLocation) {
+    init?(name: String, info: String, date: String, time: String, photo: PFFile?, location: PFGeoPoint) {
+        super.init()
+        
         // Initialize stored properties.
         self.name = name
         self.info = info
@@ -45,8 +32,6 @@ class Event: NSObject, NSCoding {
         self.photo = photo
         self.location = location
         
-        super.init()
-        
         // Initialization should fail if there is no name, info, date or time
         if name.isEmpty || info.isEmpty || date.isEmpty || time.isEmpty {
             return nil
@@ -54,29 +39,27 @@ class Event: NSObject, NSCoding {
         
     }
     
-    // MARK: NSCoding
-    
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(name, forKey: PropertyKey.nameKey)
-        aCoder.encodeObject(info, forKey: PropertyKey.infoKey)
-        aCoder.encodeObject(date, forKey: PropertyKey.dateKey)
-        aCoder.encodeObject(time, forKey: PropertyKey.timeKey)
-        aCoder.encodeObject(photo, forKey: PropertyKey.photoKey)
-        aCoder.encodeObject(location, forKey: PropertyKey.locationKey)
+    override init() {
+        super.init()
     }
     
-    required convenience init?(coder aDecoder: NSCoder) {
-        let name = aDecoder.decodeObjectForKey(PropertyKey.nameKey) as! String
-        let info = aDecoder.decodeObjectForKey(PropertyKey.infoKey) as! String
-        let date = aDecoder.decodeObjectForKey(PropertyKey.dateKey) as! String
-        let time = aDecoder.decodeObjectForKey(PropertyKey.timeKey) as! String
-        let location = aDecoder.decodeObjectForKey(PropertyKey.locationKey) as! CLLocation
-        
-        // Because photo is an optional property of Meal, use conditional cast.
-        let photo = aDecoder.decodeObjectForKey(PropertyKey.photoKey) as? UIImage
-        
-        // Must call designated initializer.
-        self.init(name: name, info: info, date: date, time: time, photo: photo, location: location)
+    class func parseClassName() -> String {
+        return "Event"
+    }
+    
+    //2
+    override class func initialize() {
+        var onceToken: dispatch_once_t = 0
+        dispatch_once(&onceToken) {
+            self.registerSubclass()
+        }
+    }
+    
+    override class func query() -> PFQuery? {
+        let query = PFQuery(className: Event.parseClassName())
+
+        query.orderByDescending("createdAt")
+        return query
     }
     
 }
