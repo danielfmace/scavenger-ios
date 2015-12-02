@@ -37,6 +37,7 @@
 		14803BD91C03A41000EB1790 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14803BD81C03A41000EB1790 /* UIViewControllerExtension.swift */; };
 		14803BDB1C03ADAB00EB1790 /* PFGeoPointExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14803BDA1C03ADAB00EB1790 /* PFGeoPointExtension.swift */; };
 		148CABDD1C03BB61001719D7 /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 148CABDC1C03BB61001719D7 /* ParseUI.framework */; };
+		788576121C0E8C9A0007DD19 /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 788576111C0E8C9A0007DD19 /* StringUtils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,6 +85,7 @@
 		14803BD81C03A41000EB1790 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		14803BDA1C03ADAB00EB1790 /* PFGeoPointExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PFGeoPointExtension.swift; sourceTree = "<group>"; };
 		148CABDC1C03BB61001719D7 /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseUI.framework; sourceTree = "<group>"; };
+		788576111C0E8C9A0007DD19 /* StringUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringUtils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +158,7 @@
 				147480631BCF0A41004D0028 /* LaunchScreen.storyboard */,
 				147480661BCF0A41004D0028 /* Info.plist */,
 				14803BCE1C0393C400EB1790 /* Scavenger-Bridging-Header.h */,
+				788576111C0E8C9A0007DD19 /* StringUtils.swift */,
 			);
 			path = Scavenger;
 			sourceTree = "<group>";
@@ -294,6 +297,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				788576121C0E8C9A0007DD19 /* StringUtils.swift in Sources */,
 				1474807E1BCF1D94004D0028 /* EventTableViewCell.swift in Sources */,
 				1474805D1BCF0A41004D0028 /* EventViewController.swift in Sources */,
 				1474807B1BCF1BA6004D0028 /* Event.swift in Sources */,

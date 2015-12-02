@@ -214,7 +214,12 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         let latText = latTextField.text ?? ""
         let lonText = lonTextField.text ?? ""
         
-        saveButton.enabled = (!nameText.isEmpty && !infoText.isEmpty && !dateText.isEmpty && !timeText.isEmpty && !latText.isEmpty && !lonText.isEmpty)
+        let validTime = timeText.containsOnly("0123456789:- ")
+        let validDate = dateText.containsOnly("0123456789/-")
+        let validLat = latText.containsOnly("-.0123456789")
+        let validLon = lonText.containsOnly("-.0123456789")
+        
+        saveButton.enabled = (!nameText.isEmpty && !infoText.isEmpty && !dateText.isEmpty && !timeText.isEmpty && !latText.isEmpty && !lonText.isEmpty && validLat && validLon && validTime && validDate)
     }
     
     func textFieldDidEndEditing(textField: UITextField) {
