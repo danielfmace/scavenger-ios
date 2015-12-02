@@ -15,7 +15,6 @@ extension String {
         
         let disallowedCharacterSet = NSCharacterSet(charactersInString: matchCharacters).invertedSet
         return self.rangeOfCharacterFromSet(disallowedCharacterSet) == nil
-        
     }
     
 }

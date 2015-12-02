@@ -214,8 +214,8 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         let latText = latTextField.text ?? ""
         let lonText = lonTextField.text ?? ""
         
-        let validTime = timeText.containsOnly("0123456789:- ")
-        let validDate = dateText.containsOnly("0123456789/-")
+        let validTime = timeText.containsOnly("0123456789:-")
+        let validDate = dateText.containsOnly("-/0123456789")
         let validLat = latText.containsOnly("-.0123456789")
         let validLon = lonText.containsOnly("-.0123456789")
         
